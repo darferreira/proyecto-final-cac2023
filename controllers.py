@@ -46,6 +46,7 @@ def create_producto():
     nombre_extension = os.path.splitext(nombre_imagen)
     # Guarda la imagen con el nombre base y la hora.
     nombre_imagen = f"prod_{int(time.time())}{nombre_extension[1]}"
+    foto.filename = nombre_imagen
     foto.save(os.path.join(app.config['FOLDER_IMG_PRODUCTOS'], nombre_imagen))
 
     new_producto=Producto(nombre,precio,stock,foto,descripcion)
@@ -70,6 +71,7 @@ def update_producto(id):
     nombre_imagen=secure_filename(foto.filename)
     nombre_extension = os.path.splitext(nombre_imagen)
     nombre_imagen = f"prod_{int(time.time())}{nombre_extension[1]}"
+    foto.filename = nombre_imagen
     foto.save(os.path.join(app.config['FOLDER_IMG_PRODUCTOS'], nombre_imagen))
 
     producto.nombre=nombre
