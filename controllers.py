@@ -46,10 +46,12 @@ def create_producto():
     nombre_extension = os.path.splitext(nombre_imagen)
     # Guarda la imagen con el nombre base y la hora.
     nombre_imagen = f"prod_{int(time.time())}{nombre_extension[1]}"
-    foto.filename = nombre_imagen
     foto.save(os.path.join(app.config['FOLDER_IMG_PRODUCTOS'], nombre_imagen))
 
-    new_producto=Producto(nombre,precio,stock,foto,descripcion)
+    #foto.filename = nombre_imagen
+    url_foto = f"/{app.config['FOLDER_IMG_PRODUCTOS']}/{nombre_imagen}"
+
+    new_producto=Producto(nombre,precio,stock,url_foto,descripcion)
     db.session.add(new_producto)
     db.session.commit()
     return producto_schema.jsonify(new_producto)
@@ -74,10 +76,12 @@ def update_producto(id):
     foto.filename = nombre_imagen
     foto.save(os.path.join(app.config['FOLDER_IMG_PRODUCTOS'], nombre_imagen))
 
+    url_foto = f"/{app.config['FOLDER_IMG_PRODUCTOS']}/{nombre_imagen}"
+
     producto.nombre=nombre
     producto.precio=precio
     producto.stock=stock
-    producto.imagen=foto
+    producto.imagen=url_foto
     producto.descripcion=descripcion
 
     db.session.commit()
