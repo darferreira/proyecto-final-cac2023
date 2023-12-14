@@ -70,20 +70,26 @@ def update_producto(id):
     stock=request.form['stock']
     descripcion=request.form['descripcion']
 
-    # Procesar la imagen
+    # print(request.files['imagen'])
+    # Procesar la imagen si no esta vacia
     foto=request.files['imagen']
-    nombre_imagen=secure_filename(foto.filename)
-    nombre_extension = os.path.splitext(nombre_imagen)
-    nombre_imagen = f"prod_{int(time.time())}{nombre_extension[1]}"
-    foto.filename = nombre_imagen
-    foto.save(os.path.join(app.config['FOLDER_IMG_PRODUCTOS'], nombre_imagen))
+    
+    if foto.filename !='':
+        nombre_imagen=secure_filename(foto.filename)
+        nombre_extension = os.path.splitext(nombre_imagen)
+        nombre_imagen = f"prod_{int(time.time())}{nombre_extension[1]}"
+        foto.filename = nombre_imagen
+        foto.save(os.path.join(app.config['FOLDER_IMG_PRODUCTOS'], nombre_imagen))
 
-    url_foto = f"/{app.config['PATH_IMG_PRODUCTOS']}/{nombre_imagen}"
+        url_foto = f"/{app.config['PATH_IMG_PRODUCTOS']}/{nombre_imagen}"
+        producto.imagen=url_foto
+
+    # url_foto = f"/{app.config['PATH_IMG_PRODUCTOS']}/{nombre_imagen}"
 
     producto.nombre=nombre
     producto.precio=precio
     producto.stock=stock
-    producto.imagen=url_foto
+    
     producto.descripcion=descripcion
 
     db.session.commit()
