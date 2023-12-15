@@ -102,3 +102,10 @@ def delete_producto(id):
     db.session.delete(producto)
     db.session.commit()
     return producto_schema.jsonify(producto)   # me devuelve un json con el registro eliminado
+
+
+@app.route('/api/searchProductos/<string:criterio>', methods=['GET'])
+def get_productos(criterio):
+    filtered_productos = Producto.query.filter(Producto.nombre.like(f"%{criterio}%")).all()
+    result = productos_schema.dump(filtered_productos)
+    return jsonify(result)
